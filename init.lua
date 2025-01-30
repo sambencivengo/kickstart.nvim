@@ -221,6 +221,12 @@ end, { desc = 'Insert require IEx; IEx.pry() at the cursor position' })
 vim.keymap.set('n', '<leader>ip', function()
   vim.api.nvim_put({ 'require IEx; IEx.pry()' }, 'l', true, true)
 end, { desc = 'Insert require IEx; IEx.pry()' })
+
+vim.keymap.set('n', '<leader>`', function()
+  local path = vim.fn.expand '%'
+  vim.fn.setreg('+', path)
+  vim.notify('Copied "' .. path .. '" to the clipboard!')
+end, { desc = 'Copy file path' })
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
@@ -967,9 +973,10 @@ require('lazy').setup({
   -- require 'kickstart.plugins.autopairs',
 
   require 'kickstart.plugins.dashboard',
-  -- require 'kickstart.plugins.neo-tree',
+  require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.oil',
   require 'kickstart.plugins.colorscheme',
+  require 'kickstart.plugins.harpoon',
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
