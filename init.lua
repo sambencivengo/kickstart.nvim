@@ -262,7 +262,6 @@ require('lazy').setup({
   --
 
   'ThePrimeagen/vim-be-good',
-  'HiPhish/rainbow-delimiters.nvim',
 
   {
     'elixir-tools/elixir-tools.nvim',
@@ -978,6 +977,7 @@ require('lazy').setup({
   require 'kickstart.plugins.oil',
   require 'kickstart.plugins.colorscheme',
   require 'kickstart.plugins.harpoon',
+  require 'kickstart.plugins.rainbow-delimiters',
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
