@@ -13,10 +13,10 @@ return {
         lua = 'rainbow-blocks',
       },
       highlight = {
-        'RainbowDelimiterOrange',
         'RainbowDelimiterBlue',
-        'RainbowDelimiterYellow',
         'RainbowDelimiterGreen',
+        'RainbowDelimiterYellow',
+        'RainbowDelimiterOrange',
         'RainbowDelimiterViolet',
         'RainbowDelimiterCyan',
         'RainbowDelimiterRed',
