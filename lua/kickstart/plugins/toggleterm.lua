@@ -5,10 +5,14 @@ return {
     version = '*',
     config = function()
       require('toggleterm').setup {
-
+        persist_mode = false,
+        start_in_insert = true,
         direction = 'float',
+        open_mapping = [[<c-\>]], -- or { [[<c-\>]], [[<c-¥>]] } if you also use a Japanese keyboard.
+        float_opts = {
+          border = 'curved',
+        },
       }
     end,
-    vim.keymap.set('n', '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' }),
   },
 }
