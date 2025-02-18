@@ -107,7 +107,7 @@ vim.g.have_nerd_font = true
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.opt.relativenumber = true
+vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
@@ -227,6 +227,15 @@ vim.keymap.set('n', '<leader>`', function()
   vim.fn.setreg('+', path)
   vim.notify('Copied "' .. path .. '" to the clipboard!')
 end, { desc = 'Copy file path' })
+
+vim.keymap.set('n', '<leader>pt', function()
+  local path = vim.fn.expand '%'
+  local line_number = vim.fn.line '.' -- Get the current line number
+  local command = 'iex -S mix test ' .. path .. ':' .. line_number .. ' --trace'
+  vim.fn.setreg('+', command)
+  vim.notify('Copied "' .. command .. '" to the clipboard!')
+end, { desc = 'Run iex shell to [P]ry at line in [T]est file' })
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
@@ -557,6 +566,8 @@ require('lazy').setup({
           --  This is where a variable was first declared, or where a function is defined, etc.
           --  To jump back, press <C-t>.
           map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+
+          map('gh', vim.lsp.buf.hover, '[G]oto [H]over information')
 
           -- Find references for the word under your cursor.
           map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
