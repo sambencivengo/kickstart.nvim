@@ -107,7 +107,7 @@ vim.g.have_nerd_font = true
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
-vim.opt.relativenumber = true
+-- vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
@@ -222,19 +222,27 @@ vim.keymap.set('n', '<leader>ip', function()
   vim.api.nvim_put({ 'require IEx; IEx.pry()' }, 'l', true, true)
 end, { desc = 'Insert require IEx; IEx.pry()' })
 
-vim.keymap.set('n', '<leader>`', function()
+vim.keymap.set('n', '<leader>`f', function()
   local path = vim.fn.expand '%'
   vim.fn.setreg('+', path)
   vim.notify('Copied "' .. path .. '" to the clipboard!')
-end, { desc = 'Copy file path' })
+end, { desc = 'Copy [F]ile path' })
 
-vim.keymap.set('n', '<leader>pt', function()
+vim.keymap.set('n', '<leader>`l', function()
+  local path = vim.fn.expand '%'
+  local line_number = vim.fn.line '.' -- Get the current line number
+  local command = 'mix test ' .. path .. ':' .. line_number .. ''
+  vim.fn.setreg('+', command)
+  vim.notify('Copied "' .. command .. '" to the clipboard!')
+end, { desc = 'Copy file path at [L]ine in the file' })
+
+vim.keymap.set('n', '<leader>`p', function()
   local path = vim.fn.expand '%'
   local line_number = vim.fn.line '.' -- Get the current line number
   local command = 'iex -S mix test ' .. path .. ':' .. line_number .. ' --trace'
   vim.fn.setreg('+', command)
   vim.notify('Copied "' .. command .. '" to the clipboard!')
-end, { desc = 'Run iex shell to [P]ry at line in [T]est file' })
+end, { desc = 'Copy file path at line in the file with [P]ry and trace' })
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
