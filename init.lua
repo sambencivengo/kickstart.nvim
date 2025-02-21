@@ -107,7 +107,7 @@ vim.g.have_nerd_font = true
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.opt.relativenumber = true
+vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
@@ -234,7 +234,15 @@ vim.keymap.set('n', '<leader>`l', function()
   local command = 'mix test ' .. path .. ':' .. line_number .. ''
   vim.fn.setreg('+', command)
   vim.notify('Copied "' .. command .. '" to the clipboard!')
-end, { desc = 'Copy file path at [L]ine in the file' })
+end, { desc = 'Copy file path for elixir test at [L]ine in the file' })
+
+vim.keymap.set('n', '<leader>`t', function()
+  local path = vim.fn.expand '%'
+  local line_number = vim.fn.line '.' -- Get the current line number
+  local command = 'mix test ' .. path .. ''
+  vim.fn.setreg('+', command)
+  vim.notify('Copied "' .. command .. '" to the clipboard!')
+end, { desc = 'Copy file path for elixir [T]est' })
 
 vim.keymap.set('n', '<leader>`p', function()
   local path = vim.fn.expand '%'
@@ -242,7 +250,7 @@ vim.keymap.set('n', '<leader>`p', function()
   local command = 'iex -S mix test ' .. path .. ':' .. line_number .. ' --trace'
   vim.fn.setreg('+', command)
   vim.notify('Copied "' .. command .. '" to the clipboard!')
-end, { desc = 'Copy file path at line in the file with [P]ry and trace' })
+end, { desc = 'Copy file path and line number for elixir test at line in the file with [P]ry and trace' })
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
@@ -988,6 +996,7 @@ require('lazy').setup({
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
   require 'kickstart.plugins.toggleterm',
   require 'kickstart.plugins.lazygit',
+  require 'kickstart.plugins.flash',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
