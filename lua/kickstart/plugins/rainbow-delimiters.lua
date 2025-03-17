@@ -19,7 +19,7 @@ return {
         'RainbowDelimiterOrange',
         'RainbowDelimiterViolet',
         'RainbowDelimiterCyan',
-        'RainbowDelimiterRed',
+        -- 'RainbowDelimiterRed',
       },
     }
   end,
