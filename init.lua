@@ -159,6 +159,9 @@ vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = 'split'
 
+-- conceal level vim notes
+vim.o.conceallevel = 1
+
 -- Show which line your cursor is on
 vim.opt.cursorline = true
 
@@ -531,6 +534,12 @@ require('lazy').setup({
       -- Useful status updates for LSP.
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
       { 'j-hui/fidget.nvim', opts = {} },
+
+      opts = {
+        servers = {
+          tailwindcss = {},
+        },
+      },
 
       -- Allows extra capabilities provided by nvim-cmp
       'hrsh7th/cmp-nvim-lsp',
