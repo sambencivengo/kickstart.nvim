@@ -10,11 +10,35 @@ return {
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
       -- vim.cmd.colorscheme 'catppuccin-mocha'
 
-      --vim.cmd.colorscheme 'catppuccin-mocha'
       -- You can configure highlights by doing something like:
 
-      vim.cmd.colorscheme 'kanagawa-wave'
+      -- vim.cmd.colorscheme 'kanagawa-wave'
       vim.cmd.hi 'Comment gui=none'
+    end,
+  },
+  {
+    'vague2k/vague.nvim',
+
+    name = 'vague',
+    priority = 1000,
+    init = function()
+      vim.cmd.colorscheme 'vague'
+    end,
+  },
+  {
+    'EdenEast/nightfox.nvim',
+    name = 'nightfox',
+    priority = 1000,
+    init = function()
+      -- vim.cmd.colorscheme 'rose-pine'
+    end,
+  },
+  {
+    'rose-pine/neovim',
+    name = 'rose-pine',
+    priority = 1000,
+    init = function()
+      -- vim.cmd.colorscheme 'rose-pine'
     end,
   },
   {
@@ -22,13 +46,26 @@ return {
     name = 'catppuccin',
     priority = 1000,
 
+    opts = {
+      integrations = {
+        cmp = true,
+        gitsigns = true,
+        nvimtree = true,
+        treesitter = true,
+        notify = false,
+        mini = {
+          enabled = true,
+          indentscope_color = '',
+        },
+      },
+    },
     init = function()
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
       -- vim.cmd.colorscheme 'catppuccin-mocha'
 
-      --vim.cmd.colorscheme 'catppuccin-mocha'
+      -- vim.cmd.colorscheme 'catppuccin-mocha'
       -- You can configure highlights by doing something like:
 
       vim.cmd.hi 'Comment gui=none'

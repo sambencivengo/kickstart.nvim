@@ -225,6 +225,11 @@ vim.keymap.set('n', '<leader>ip', function()
   vim.api.nvim_put({ 'require IEx; IEx.pry()' }, 'l', true, true)
 end, { desc = 'Insert require IEx; IEx.pry()' })
 
+vim.api.nvim_create_user_command('Today', function()
+  local date = os.date '%B %d, %Y' .. '' -- Change format if needed
+  vim.api.nvim_put({ date }, '', false, true)
+end, {})
+
 vim.keymap.set('n', '<leader>`f', function()
   local path = vim.fn.expand '%'
   vim.fn.setreg('+', path)
@@ -668,14 +673,14 @@ require('lazy').setup({
       })
 
       -- Change diagnostic symbols in the sign column (gutter)
-      -- if vim.g.have_nerd_font then
-      --   local signs = { ERROR = '', WARN = '', INFO = '', HINT = '' }
-      --   local diagnostic_signs = {}
-      --   for type, icon in pairs(signs) do
-      --     diagnostic_signs[vim.diagnostic.severity[type]] = icon
-      --   end
-      --   vim.diagnostic.config { signs = { text = diagnostic_signs } }
-      -- end
+      if vim.g.have_nerd_font then
+        local signs = { ERROR = '', WARN = '', INFO = '', HINT = '' }
+        local diagnostic_signs = {}
+        for type, icon in pairs(signs) do
+          diagnostic_signs[vim.diagnostic.severity[type]] = icon
+        end
+        vim.diagnostic.config { signs = { text = diagnostic_signs } }
+      end
 
       -- LSP servers and clients are able to communicate to each other what features they support.
       --  By default, Neovim doesn't support everything that is in the LSP specification.
@@ -905,6 +910,7 @@ require('lazy').setup({
             -- set group index to 0 to skip loading LuaLS completions as lazydev recommends it
             group_index = 0,
           },
+          { name = 'render-markdown' },
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
@@ -1001,7 +1007,7 @@ require('lazy').setup({
   require 'kickstart.plugins.oil',
   require 'kickstart.plugins.colorscheme',
   require 'kickstart.plugins.harpoon',
-  -- require 'kickstart.plugins.rainbow-delimiters',
+  require 'kickstart.plugins.rainbow-delimiters',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
   require 'kickstart.plugins.toggleterm',
   require 'kickstart.plugins.lazygit',
