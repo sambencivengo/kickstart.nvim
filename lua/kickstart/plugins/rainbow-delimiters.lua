@@ -12,6 +12,15 @@ return {
         [''] = 'rainbow-delimiters',
         lua = 'rainbow-blocks',
       },
+      -- highlight = {
+      --   'RainbowDelimiterBlue',
+      --   'RainbowDelimiterGreen',
+      --   'RainbowDelimiterYellow',
+      --   'RainbowDelimiterOrange',
+      --   'RainbowDelimiterViolet',
+      --   'RainbowDelimiterCyan',
+      --   'RainbowDelimiterRed',
+      -- },
     }
   end,
 }
