@@ -4,6 +4,14 @@ return {
     name = 'kanagawa',
     priority = 1000,
 
+    opts = {
+      compile = true,
+      colors = {
+        palette = {
+          dragonBlack0 = '#000000',
+        },
+      },
+    },
     init = function()
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
@@ -12,7 +20,7 @@ return {
 
       -- You can configure highlights by doing something like:
 
-      -- vim.cmd.colorscheme 'kanagawa-wave'
+      vim.cmd.colorscheme 'kanagawa-dragon'
       vim.cmd.hi 'Comment gui=none'
     end,
   },
@@ -22,7 +30,7 @@ return {
     name = 'vague',
     priority = 1000,
     init = function()
-      vim.cmd.colorscheme 'vague'
+      -- vim.cmd.colorscheme 'vague'
     end,
   },
   {

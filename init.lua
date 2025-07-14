@@ -230,6 +230,10 @@ vim.api.nvim_create_user_command('Today', function()
   vim.api.nvim_put({ date }, '', false, true)
 end, {})
 
+vim.keymap.set('i', '<C-y>', function()
+  require('cmp').complete()
+end, { desc = 'Trigger completion' })
+
 vim.keymap.set('n', '<leader>`f', function()
   local path = vim.fn.expand '%'
   vim.fn.setreg('+', path)
@@ -1007,7 +1011,7 @@ require('lazy').setup({
   require 'kickstart.plugins.oil',
   require 'kickstart.plugins.colorscheme',
   require 'kickstart.plugins.harpoon',
-  require 'kickstart.plugins.rainbow-delimiters',
+  -- require 'kickstart.plugins.rainbow-delimiters',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
   require 'kickstart.plugins.toggleterm',
   require 'kickstart.plugins.lazygit',
@@ -1015,6 +1019,7 @@ require('lazy').setup({
   require 'kickstart.plugins.autotag',
   require 'kickstart.plugins.obsidian',
   require 'kickstart.plugins.tailwind',
+  -- require 'kickstart.plugins.mason-workaround',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
