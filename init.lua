@@ -179,6 +179,8 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 vim.keymap.set('n', '<C-]>', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic' })
 vim.keymap.set('n', '<C-[>', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic' })
+--vim.diagnostic.config { virtual_lines = true }
+vim.diagnostic.config { virtual_text = true }
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -299,7 +301,6 @@ require('lazy').setup({
   --
 
   'ThePrimeagen/vim-be-good',
-
   {
     'elixir-tools/elixir-tools.nvim',
     version = '*',
@@ -311,7 +312,7 @@ require('lazy').setup({
       elixir.setup {
         nextls = { enable = true },
         elixirls = {
-          enable = true,
+          enable = false,
           settings = elixirls.settings {
             dialyzerEnabled = false,
             enableTestLenses = false,
@@ -331,7 +332,123 @@ require('lazy').setup({
       'nvim-lua/plenary.nvim',
     },
   },
-
+  --  {
+  --    'elixir-tools/elixir-tools.nvim',
+  --    version = '*',
+  --    event = { 'BufReadPre', 'BufNewFile' },
+  --    config = function()
+  --      local elixir = require 'elixir'
+  --      local elixirls = require 'elixir.elixirls'
+  --
+  --      elixir.setup {
+  --        nextls = {
+  --          enable = false,
+  --          -- 👇 Add this root_dir override
+  --          root_dir = function(fname)
+  --            local util = require 'lspconfig.util'
+  --            local root = util.root_pattern('mix.exs', '.git')(fname)
+  --            vim.notify('NextLS root_dir detected: ' .. (root or 'nil'), vim.log.levels.INFO)
+  --            return root
+  --          end,
+  --          init_options = {
+  --            mix_env = 'dev',
+  --            mix_target = 'host',
+  --            experimental = {
+  --              completions = {
+  --                enable = false, -- control if completions are enabled. defaults to false
+  --              },
+  --            },
+  --          },
+  --          on_attach = function(client, bufnr)
+  --            require('which-key').register {
+  --              ['<leader>x'] = { name = 'Eli[x]ir', _ = 'which_key_ignore' },
+  --            }
+  --            vim.keymap.set('n', '<space>xa', ':Elixir nextls alias-refactor<cr>', { desc = '[a]lias refactor', buffer = true, noremap = true })
+  --            vim.keymap.set('n', '<space>xf', ':Elixir nextls from-pipe<cr>', { desc = '[f]rom pipe', buffer = true, noremap = true })
+  --            vim.keymap.set('n', '<space>xt', ':Elixir nextls to-pipe<cr>', { desc = '[t]o pipe', buffer = true, noremap = true })
+  --
+  --            require('lspconfig').tailwindcss.setup {
+  --              filetypes = { 'html', 'elixir', 'eelixir', 'heex' },
+  --              init_options = {
+  --                userLanguages = {
+  --                  elixir = 'html-eex',
+  --                  eelixir = 'html-eex',
+  --                  heex = 'html-eex',
+  --                },
+  --              },
+  --              settings = {
+  --                elixirLS = {
+  --                  enableFormatter = true,
+  --                },
+  --                tailwindCSS = {
+  --                  experimental = {
+  --                    classRegex = {
+  --                      'class[:]\\s*"([^"]*)"',
+  --                    },
+  --                  },
+  --                },
+  --              },
+  --            }
+  --          end,
+  --        },
+  --        credo = {},
+  --        elixirls = {
+  --          enable = false,
+  --          settings = elixirls.settings {
+  --            dialyzerEnabled = true,
+  --            enableTestLenses = false,
+  --          },
+  --          on_attach = function(client, bufnr)
+  --            require('which-key').add {
+  --              { '<leader>x', group = 'Eli[x]ir' },
+  --            }
+  --            vim.keymap.set('n', '<space>xP', ':ElixirFromPipe<cr>', { buffer = true, noremap = true })
+  --            vim.keymap.set('n', '<space>xp', ':ElixirToPipe<cr>', { buffer = true, noremap = true })
+  --            vim.keymap.set('n', '<space>xr', ':ElixirRestart<cr>', { buffer = true, noremap = true })
+  --            vim.keymap.set('n', '<space>xo', ':ElixirOutputPanel<cr>', { buffer = true, noremap = true })
+  --            vim.keymap.set('v', '<space>xm', ':ElixirExpandMacro<cr>', { buffer = true, noremap = true })
+  --
+  --            require('lspconfig').tailwindcss.setup {
+  --              filetypes = { 'html', 'elixir', 'eelixir', 'heex' },
+  --              init_options = {
+  --                userLanguages = {
+  --                  elixir = 'html-eex',
+  --                  eelixir = 'html-eex',
+  --                  heex = 'html-eex',
+  --                },
+  --              },
+  --              settings = {
+  --                tailwindCSS = {
+  --                  experimental = {
+  --                    classRegex = {
+  --                      'class[:]\\s*"([^"]*)"',
+  --                    },
+  --                  },
+  --                },
+  --              },
+  --            }
+  --          end,
+  --        },
+  --      }
+  --    end,
+  --    dependencies = {
+  --      'nvim-lua/plenary.nvim',
+  --    },
+  --  },
+  {
+    'stevearc/conform.nvim',
+    event = { 'BufWritePre' },
+    cmd = { 'ConformInfo' },
+    opts = {
+      formatters_by_ft = {
+        elixir = { 'mix' },
+      },
+      format_on_save = {
+        lsp_fallback = true,
+        timeout_ms = 500,
+      },
+    },
+  },
   -- Here is a more advanced example where we pass configuration
   -- options to `gitsigns.nvim`. This is equivalent to the following Lua:
   --    require('gitsigns').setup({ ... })
@@ -413,8 +530,11 @@ require('lazy').setup({
 
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
-    event = 'VimEnter',
+    -- NOTE: temp branch check out because warnings are bugged (7/15/25)
     branch = '0.1.x',
+    commit = 'b4da76be54691e854d3e0e02c36b0245f945c2c7',
+
+    event = 'VimEnter',
     dependencies = {
       'nvim-lua/plenary.nvim',
       { -- If encountering errors, see telescope-fzf-native README for installation instructions
@@ -713,8 +833,46 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`ts_ls`) will work just fine
-        ts_ls = {},
+        -- NOTE: NEXT LS
+        --nextls = {
+        --  -- Next LS is not in Mason, so we provide full manual config
+        --  cmd = { '/Users/sambencivengo/.cache/elixir-tools/nextls/bin/nextls', '--stdio' },
+        --  filetypes = { 'elixir', 'eelixir', 'heex' },
+        --  root_dir = require('lspconfig.util').root_pattern('mix.exs', '.git'),
+        --  settings = {},
+        --  init_options = {
+        --    mix_env = 'dev',
+        --    mix_target = 'host',
+        --    experimental = {
+        --      completions = { enable = false },
+        --    },
+        --  },
+        --},
+        -- lexical = {
+        --   -- optional: override default cmd
+        --   -- cmd = { "lexical" },
+        --   filetypes = { 'elixir', 'eelixir', 'heex' },
         --
+        --   -- optional: tweak settings
+        --   settings = {
+        --     elixirLS = {
+        --       dialyzerEnabled = false,
+        --       enableTestLenses = false,
+        --     },
+        --   },
+        -- },
+        ts_ls = {},
+        elixirls = {
+          cmd = { '/Users/sambencivengo/.local/share/nvim/mason/packages/elixir-ls/language_server.sh' },
+          filetypes = { 'elixir', 'eelixir', 'heex' },
+          root_dir = require('lspconfig.util').root_pattern('mix.exs', '.git'),
+          settings = {
+            elixirLS = {
+              dialyzerEnabled = false,
+              fetchDeps = false,
+            },
+          },
+        }, --
 
         lua_ls = {
           -- cmd = { ... },
@@ -757,6 +915,15 @@ require('lazy').setup({
             -- certain features of an LSP (for example, turning off formatting for ts_ls)
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
             require('lspconfig')[server_name].setup(server)
+          end,
+          ['lexical'] = function()
+            local server = servers['lexical']
+            if not server then
+              vim.notify('Lexical LSP config not found', vim.log.levels.WARN)
+              return
+            end
+            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+            require('lspconfig').lexical.setup(server)
           end,
         },
       }
