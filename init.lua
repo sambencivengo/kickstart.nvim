@@ -103,6 +103,9 @@ vim.g.have_nerd_font = true
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
 
+-- End of buffer fill characters
+vim.opt.fillchars = { eob = '~' }
+
 -- Make line numbers default
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
@@ -278,6 +281,8 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
+vim.keymap.set('n', '<leader>fg', ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>")
+
 -- [[ Configure and install plugins ]]
 --
 --  To check the current status of your plugins, run
@@ -310,7 +315,7 @@ require('lazy').setup({
       local elixirls = require 'elixir.elixirls'
 
       elixir.setup {
-        nextls = { enable = true },
+        nextls = { enable = false },
         elixirls = {
           enable = false,
           settings = elixirls.settings {
@@ -550,6 +555,12 @@ require('lazy').setup({
           return vim.fn.executable 'make' == 1
         end,
       },
+      {
+        'nvim-telescope/telescope-live-grep-args.nvim',
+        -- This will not install any breaking changes.
+        -- For major updates, this must be adjusted manually.
+        version = '^1.0.0',
+      },
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
@@ -577,7 +588,8 @@ require('lazy').setup({
 
       -- [[ Configure Telescope ]]
       -- See `:help telescope` and `:help telescope.setup()`
-      require('telescope').setup {
+      local telescope = require 'telescope'
+      telescope.setup {
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
         --
@@ -595,6 +607,7 @@ require('lazy').setup({
         },
       }
 
+      telescope.load_extension 'live_grep_args'
       -- Enable Telescope extensions if they are installed
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
@@ -848,31 +861,15 @@ require('lazy').setup({
         --    },
         --  },
         --},
-        -- lexical = {
-        --   -- optional: override default cmd
-        --   -- cmd = { "lexical" },
-        --   filetypes = { 'elixir', 'eelixir', 'heex' },
-        --
-        --   -- optional: tweak settings
-        --   settings = {
-        --     elixirLS = {
-        --       dialyzerEnabled = false,
-        --       enableTestLenses = false,
-        --     },
-        --   },
-        -- },
-        ts_ls = {},
-        elixirls = {
-          cmd = { '/Users/sambencivengo/.local/share/nvim/mason/packages/elixir-ls/language_server.sh' },
+        lexical = {
           filetypes = { 'elixir', 'eelixir', 'heex' },
-          root_dir = require('lspconfig.util').root_pattern('mix.exs', '.git'),
-          settings = {
-            elixirLS = {
-              dialyzerEnabled = false,
-              fetchDeps = false,
-            },
-          },
-        }, --
+          settings = {},
+          root_dir = function(fname)
+            local util = require 'lspconfig.util'
+            return util.root_pattern('mix.exs', '.git')(fname) or vim.loop.os_homedir()
+          end,
+        },
+        ts_ls = {},
 
         lua_ls = {
           -- cmd = { ... },
@@ -1186,6 +1183,7 @@ require('lazy').setup({
   require 'kickstart.plugins.autotag',
   require 'kickstart.plugins.obsidian',
   require 'kickstart.plugins.tailwind',
+  require 'kickstart.plugins.marks',
   -- require 'kickstart.plugins.mason-workaround',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
